@@ -55,6 +55,37 @@
                   <valueless/>
                 </properties>
               </leafNode>
+              <leafNode name="fudge">
+                <properties>
+                  <help>Fudge server properties</help>
+                </properties>
+              </leafNode>
+              <leafNode name="minpoll">
+                <properties>
+                  <help>Minimum polling rate, in seconds as a power of 2</help>
+                  <valueHelp>
+                    <format>u32:3-17</format>
+                    <description>Minimum poll rate, seconds as a power of 2</description>
+                  </valueHelp>
+                  <constraint>
+                    <validator name="numeric" argument="--range 3-17"/>
+                  </constraint>
+                  <constraintErrorMessage>Min poll must be between 3 and 17</constraintErrorMessage>
+                </properties>
+              </leafNode>
+              <leafNode name="maxpoll">
+                <properties>
+                  <help>Maximum polling rate, in seconds as a power of 2</help>
+                  <valueHelp>
+                    <format>u32:3-17</format>
+                    <description>Maximum poll rate, seconds as a power of 2</description>
+                  </valueHelp>
+                  <constraint>
+                    <validator name="numeric" argument="--range 3-17"/>
+                  </constraint>
+                  <constraintErrorMessage>Max poll must be between 3 and 17</constraintErrorMessage>
+                </properties>
+              </leafNode>
             </children>
           </tagNode>
           <node name="allow-clients">

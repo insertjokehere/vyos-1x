@@ -21,7 +21,10 @@ restrict -6 ::1
 {%         if config.pool is vyos_defined %}
 {%             set association = 'pool' %}
 {%         endif %}
-{{ association }} {{ server | replace('_', '-') }} iburst {{ 'noselect' if config.noselect is vyos_defined }} {{ 'preempt' if config.preempt is vyos_defined }} {{ 'prefer' if config.prefer is vyos_defined }}
+{{ association }} {{ server | replace('_', '-') }} iburst {{ 'noselect' if config.noselect is vyos_defined }} {{ 'preempt' if config.preempt is vyos_defined }} {{ 'prefer' if config.prefer is vyos_defined }} {% if config.minpoll is vyos_defined %}minpoll {{ config.minpoll }}{% endif %} {% if config.maxpoll is vyos_defined %}maxpoll {{ config.maxpoll }}{% endif %}
+{%         if config.fudge is vyos_defined %}
+fudge {{ server | replace('_', '-') }} {{ config.fudge }}
+{%         endif %}
 {%     endfor %}
 {% endif %}
 
