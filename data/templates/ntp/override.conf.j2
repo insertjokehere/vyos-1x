@@ -6,6 +6,7 @@ After=vyos-router.service
 
 [Service]
 ExecStart=
+ExecStartPre=-/usr/bin/update-leap --ntp-conf-file {{ config_file }}
 ExecStart={{ vrf_command }}/usr/sbin/ntpd -g -p {{ config_file | replace('.conf', '.pid') }} -c {{ config_file }} -u ntp:ntp
 PIDFile=
 PIDFile={{ config_file | replace('.conf', '.pid') }}

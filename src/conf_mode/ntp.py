@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import shutil
 
 from vyos.config import Config
 from vyos.configdict import is_node_changed
@@ -29,6 +30,8 @@ airbag.enable()
 
 config_file = r'/run/ntpd/ntpd.conf'
 systemd_override = r'/etc/systemd/system/ntp.service.d/override.conf'
+leap_file = r'/config/leap-seconds.list'
+update_leap_cron = r'/etc/cron.weekly/update-leap'
 
 def get_config(config=None):
     if config:
@@ -79,6 +82,7 @@ def generate(ntp):
 
     render(config_file, 'ntp/ntpd.conf.j2', ntp)
     render(systemd_override, 'ntp/override.conf.j2', ntp)
+    render(update_leap_cron, 'ntp/update-leap.js', ntp)
 
     return None
 
@@ -92,9 +96,16 @@ def apply(ntp):
         call(f'systemctl stop {systemd_service}')
         if os.path.exists(config_file):
             os.unlink(config_file)
+        if os.path.exists(leap_file):
+            os.unlink(leap_file)
         if os.path.isfile(systemd_override):
             os.unlink(systemd_override)
+        if os.path.exists(update_leap_cron):
+            os.unlink(update_leap_cron)
         return
+
+    if not os.path.exists(leap_file):
+        shutil.copyfile("/usr/share/zoneinfo/leap-seconds.list", leap_file)
 
     # we need to restart the service if e.g. the VRF name changed
     systemd_action = 'reload-or-restart'
