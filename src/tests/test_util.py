@@ -25,7 +25,7 @@ class TestVyOSUtil(TestCase):
         self.assertEqual(new_data, expected_data)
 
     def test_sysctl_read(self):
-        self.assertEqual(sysctl_read('net.ipv4.conf.lo.forwarding'), '1')
+        self.assertEqual(sysctl_read('net.ipv4.conf.lo.forwarding'), '0')
 
     def test_ipv6_enabled(self):
         tmp = sysctl_read('net.ipv6.conf.all.disable_ipv6')
